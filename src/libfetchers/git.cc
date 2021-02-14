@@ -419,9 +419,9 @@ struct GitInputScheme : InputScheme
         ) {
             throw Error(
                 "Cannot find Git revision '%s' in ref '%s' of repository '%s'! "
-                    "Please make sure that the " ANSI_BOLD "rev" ANSI_NORMAL " exists on the "
-                    ANSI_BOLD "ref" ANSI_NORMAL " you've specified or add " ANSI_BOLD
-                    "allRefs = true;" ANSI_NORMAL " to " ANSI_BOLD "fetchGit" ANSI_NORMAL ".",
+                    "Please make sure that the " + ANSI_BOLD + "rev" + ANSI_NORMAL + " exists on the " +
+                    ANSI_BOLD + "ref" + ANSI_NORMAL + " you've specified or add " + ANSI_BOLD +
+                    "allRefs = true;" + ANSI_NORMAL + " to " + ANSI_BOLD + "fetchGit" + ANSI_NORMAL + ".",
                 input.getRev()->gitRev(),
                 *input.getRef(),
                 actualUrl

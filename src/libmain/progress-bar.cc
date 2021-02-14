@@ -140,10 +140,10 @@ public:
     void log(State & state, Verbosity lvl, const std::string & s)
     {
         if (state.active) {
-            writeToStderr("\r\e[K" + filterANSIEscapes(s, !isTTY) + ANSI_NORMAL "\n");
+            writeToStderr("\r\e[K" + filterANSIEscapes(s, !isTTY) + ANSI_NORMAL + "\n");
             draw(state);
         } else {
-            auto s2 = s + ANSI_NORMAL "\n";
+            auto s2 = s + ANSI_NORMAL + "\n";
             if (!isTTY) s2 = filterANSIEscapes(s2, true);
             writeToStderr(s2);
         }
@@ -169,10 +169,10 @@ public:
             std::string name(storePathToName(getS(fields, 0)));
             if (hasSuffix(name, ".drv"))
                 name = name.substr(0, name.size() - 4);
-            i->s = fmt("building " ANSI_BOLD "%s" ANSI_NORMAL, name);
+            i->s = fmt("building " + ANSI_BOLD + "%s" + ANSI_NORMAL, name);
             auto machineName = getS(fields, 1);
             if (machineName != "")
-                i->s += fmt(" on " ANSI_BOLD "%s" ANSI_NORMAL, machineName);
+                i->s += fmt(" on " + ANSI_BOLD + "%s" + ANSI_NORMAL, machineName);
             auto curRound = getI(fields, 2);
             auto nrRounds = getI(fields, 3);
             if (nrRounds != 1)
@@ -185,8 +185,8 @@ public:
             auto sub = getS(fields, 1);
             i->s = fmt(
                 hasPrefix(sub, "local")
-                ? "copying " ANSI_BOLD "%s" ANSI_NORMAL " from %s"
-                : "fetching " ANSI_BOLD "%s" ANSI_NORMAL " from %s",
+                ? "copying " + ANSI_BOLD + "%s" + ANSI_NORMAL + " from %s"
+                : "fetching " + ANSI_BOLD + "%s" + ANSI_NORMAL + " from %s",
                 name, sub);
         }
 
@@ -194,13 +194,13 @@ public:
             auto name = storePathToName(getS(fields, 0));
             if (hasSuffix(name, ".drv"))
                 name = name.substr(0, name.size() - 4);
-            i->s = fmt("post-build " ANSI_BOLD "%s" ANSI_NORMAL, name);
+            i->s = fmt("post-build " + ANSI_BOLD + "%s" + ANSI_NORMAL, name);
             i->name = DrvName(name).name;
         }
 
         if (type == actQueryPathInfo) {
             auto name = storePathToName(getS(fields, 0));
-            i->s = fmt("querying " ANSI_BOLD "%s" ANSI_NORMAL " on %s", name, getS(fields, 1));
+            i->s = fmt("querying " + ANSI_BOLD + "%s" + ANSI_NORMAL + " on %s", name, getS(fields, 1));
         }
 
         if ((type == actFileTransfer && hasAncestor(*state, actCopyPath, parent))
@@ -389,14 +389,14 @@ public:
             if (running || done || expected || failed) {
                 if (running)
                     if (expected != 0)
-                        s = fmt(ANSI_BLUE + numberFmt + ANSI_NORMAL "/" ANSI_GREEN + numberFmt + ANSI_NORMAL "/" + numberFmt,
+                        s = fmt(ANSI_BLUE + numberFmt + ANSI_NORMAL + "/" + ANSI_GREEN + numberFmt + ANSI_NORMAL + "/" + numberFmt,
                             running / unit, done / unit, expected / unit);
                     else
-                        s = fmt(ANSI_BLUE + numberFmt + ANSI_NORMAL "/" ANSI_GREEN + numberFmt + ANSI_NORMAL,
+                        s = fmt(ANSI_BLUE + numberFmt + ANSI_NORMAL + "/" + ANSI_GREEN + numberFmt + ANSI_NORMAL,
                             running / unit, done / unit);
                 else if (expected != done)
                     if (expected != 0)
-                        s = fmt(ANSI_GREEN + numberFmt + ANSI_NORMAL "/" + numberFmt,
+                        s = fmt(ANSI_GREEN + numberFmt + ANSI_NORMAL + "/" + numberFmt,
                             done / unit, expected / unit);
                     else
                         s = fmt(ANSI_GREEN + numberFmt + ANSI_NORMAL, done / unit);
@@ -405,7 +405,7 @@ public:
                 s = fmt(itemFmt, s);
 
                 if (failed)
-                    s += fmt(" (" ANSI_RED "%d failed" ANSI_NORMAL ")", failed / unit);
+                    s += fmt(" (" + ANSI_RED + "%d failed" + ANSI_NORMAL + ")", failed / unit);
             }
 
             return s;
@@ -445,12 +445,12 @@ public:
 
         if (state.corruptedPaths) {
             if (!res.empty()) res += ", ";
-            res += fmt(ANSI_RED "%d corrupted" ANSI_NORMAL, state.corruptedPaths);
+            res += fmt(ANSI_RED + "%d corrupted" + ANSI_NORMAL, state.corruptedPaths);
         }
 
         if (state.untrustedPaths) {
             if (!res.empty()) res += ", ";
-            res += fmt(ANSI_RED "%d untrusted" ANSI_NORMAL, state.untrustedPaths);
+            res += fmt(ANSI_RED + "%d untrusted" + ANSI_NORMAL, state.untrustedPaths);
         }
 
         return res;
